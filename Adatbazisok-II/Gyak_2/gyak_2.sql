@@ -1,5 +1,16 @@
 
 
+
+
+--orai feladat
+--14.Írjunk meg egy PLSQL procedúrát, amelyik a paraméterül kapott felhasználónévre kiírja a felhasználó legutoljára létrehozott tábláját, annak méretét byte-okban, valamint a létrehozás dátumát. 
+--Az output formátuma a következõ legyen:
+--Table_name: NNNNNN   Size: SSSSSS bytes   Created: yyyy.mm.dd.hh:mi
+
+--CREATE OR REPLACE PROCEDURE newest_table(p_user VARCHAR2) IS
+
+select * from dba_tables where owner = 'NIKOVITS';
+
 --trigger generálás példa
 CREATE TABLE test1(col1 INTEGER PRIMARY KEY, col2 VARCHAR2(20));
 
