@@ -1,1 +1,1 @@
-# :boom: V.Félév :boom:
+# :boom: V. Félév :boom:
