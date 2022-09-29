@@ -20,12 +20,27 @@ class Ticket extends Model
         'user_id',
     ];
 
-    public function comment() {
+    public function comment()
+    {
         return $this->hasMany(Comment::class);
     }
 
-     public function users() {
+    public function users()
+    {
         return $this->belongsToMany(User::class);
     }
 
+    public function submitter()
+    {
+        return $this->belongsToMany(User::class)
+            ->withPivot('is_submitter', 'is_responsible')
+            ->wherePivot('is_submitter', 1);
+    }
+
+    public function notSubmitters()
+    {
+        return $this->belongsToMany(User::class)
+            ->withPivot('is_submitter', 'is_responsible')
+            ->wherePivot('is_submitter', 0);
+    }
 }

@@ -7,7 +7,7 @@ use Illuminate\Database\Seeder;
 use App\Models\User;
 use App\Models\Ticket;
 
-class DatabaseSeeder extends Seeder
+class UserSeeder extends Seeder
 {
     /**
      * Seed the application's database.
@@ -16,6 +16,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call([UserSeeder::class,TicketSeeder::class,CommentSeeder::class]);
+        User::factory()->create([
+            'name' => 'Admin',
+            'email' => 'admin@example.com',
+            'is_admin' => true,
+        ]);
+
+        //dd($users); // itt magatol terminal, mehal, siras
+
+        User::factory(10)->create();
     }
 }

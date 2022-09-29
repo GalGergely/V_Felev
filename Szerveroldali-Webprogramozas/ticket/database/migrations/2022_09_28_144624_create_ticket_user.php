@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('ticket_user', function (Blueprint $table) {
             $table->id();
             $table->boolean('is_submitter')->default(false);
-            $table->boolean('is_resoponsible')->default(false);
+            $table->boolean('is_responsible')->default(false);
 
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');

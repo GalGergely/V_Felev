@@ -16,10 +16,7 @@ return new class extends Migration
         Schema::create('tickets', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->enum('priority', [0,1,2,3]);
-
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->enum('priority', [0, 1, 2, 3]);
 
             $table->timestamps();
         });
