@@ -5,11 +5,13 @@ if (len(sys.argv) == 2):
     data = json.load(open(sys.argv[1]))
 else:
     exit(1)
+
 occupiedCircuits = []
 startedDemands = []
 
 
 def checkIfCircuitAvailable(circuit, demand):
+    # ha a kivalaszotott circuit barmelyik linkje nem elerheto false, ha elerheto minden ture
     links = data["links"]
     for c in range(0, len(circuit)-1):
         val = False
@@ -22,13 +24,15 @@ def checkIfCircuitAvailable(circuit, demand):
 
 
 def allocateTheDemand(circuit, demand):
+    # itt mar tudjuk hogy az adott linkek minden resze elerheto,szoval csak a lefoglalast vegzi
     links = data["links"]
     for c in range(0, len(circuit)-1):
         for link in links:
             if (link['points'][0] == circuit[c] and link['points'][1] == circuit[c+1] and link['capacity'] >= demand['demand']):
+                #print(str(link['points'][0])+'<=>'+str(link['points'][1])+"; old capacity: "+str(link['capacity']))
                 link['capacity'] = link['capacity']-demand['demand']
+                #print(str(link['points'][0])+'<=>'+str(link['points'][1])+"; New capacity: "+str(link['capacity']))
     occupiedCircuits.append([circuit, demand])
-    return True
 
 
 def checkPossibleCircuits(demand):
@@ -36,30 +40,21 @@ def checkPossibleCircuits(demand):
     for c in circuits:
         start = c[0]
         finish = c[len(c)-1]
+        # ellenorzi mely circuit kezdo es vegpontja felel meg a demand kezdo es vegpontjanak
         if (demand["end-points"][0] == start and demand["end-points"][1] == finish):
             if (checkIfCircuitAvailable(c, demand)):
-                if (allocateTheDemand(c, demand)):
-                    startedDemands.append(demand)
-                    print("igény foglalás: " + str(demand['end-points'][0])+"<->" +
-                          str(demand['end-points'][1])+" st: " + str(demand['start-time'])+' - sikeres')
-                    return True
+                allocateTheDemand(c, demand)
+                startedDemands.append(demand)
+                print("igény foglalás: " + str(demand['end-points'][0])+"<->" +
+                      str(demand['end-points'][1])+" st: " + str(demand['start-time'])+' - sikeres')
+                return True
     print("igény foglalás: " + str(demand['end-points'][0])+"<->" +
           str(demand['end-points'][1])+" st:" + str(demand['start-time'])+' - sikertelen')
     return False
 
 
-def reservationRequest(demand):
-    checkPossibleCircuits(demand)
-
-
-def checkIfSgStarts(time):
-    demands = data['simulation']['demands']
-    for demand in demands:
-        if (demand["start-time"] == time):
-            reservationRequest(demand)
-
-
 def letResourcesDeallocate(demand):
+    # eloszor leelenorzi hogy a demand egyaltalan elindult e, es ha igen, akkor a lefoglalt circuitoknak visszaadja a kakaot
     bul = False
     for d in startedDemands:
         if (d == demand):
@@ -69,28 +64,40 @@ def letResourcesDeallocate(demand):
             if (c[1] == demand):
                 deallocateOneByOne(c[0], demand['demand'])
         print('igény felszabaditasra: ' +
-              str(demand['end-points'][0]) + '<->' + str(demand['end-points'][1]) + ' st: ' + str(demand['end-time']) + ' - sikeres')
-        return True
-    else:
-        return False
+              str(demand['end-points'][0]) + '<->' + str(demand['end-points'][1]) + ' st: ' + str(demand['end-time']))
 
 
 def deallocateOneByOne(circuit, demandSize):
     for c in range(0, len(circuit)-1):
         for link in data['links']:
             if (link['points'][0] == circuit[c] and link['points'][1] == circuit[c+1]):
+                #print('before'+ str(link['capacity']))
                 link['capacity'] += demandSize
+                #print('after'+ str(link['capacity']))
 
 
 def checkIfSgStopps(time):
+    # megnezi valami megall e
     demands = data['simulation']['demands']
     for demand in demands:
         if (demand["end-time"] == time):
             letResourcesDeallocate(demand)
 
 
-t = 0
-while (t <= data['simulation']['duration']):
+def checkIfSgStarts(time):
+    # megnezi valami elindul e
+    demands = data['simulation']['demands']
+    for demand in demands:
+        if (demand["start-time"] == time):
+            checkPossibleCircuits(demand)
+
+
+def startProgram(t):
     checkIfSgStarts(t)
     checkIfSgStopps(t)
+
+
+t = 0
+while (t <= data['simulation']['duration']):
+    startProgram(t)
     t = t+1
