@@ -36,6 +36,7 @@ def allocateTheDemand(circuit, demand):
 
 
 def checkPossibleCircuits(demand):
+    global counter
     circuits = data['possible-circuits']
     for c in circuits:
         start = c[0]
@@ -45,16 +46,19 @@ def checkPossibleCircuits(demand):
             if (checkIfCircuitAvailable(c, demand)):
                 allocateTheDemand(c, demand)
                 startedDemands.append(demand)
-                print("igény foglalás: " + str(demand['end-points'][0])+"<->" +
-                      str(demand['end-points'][1])+" st: " + str(demand['start-time'])+' - sikeres')
+                print(str(counter)+". igény foglalás: " + str(demand['end-points'][0])+"<->" +
+                      str(demand['end-points'][1])+" st:" + str(demand['start-time'])+' - sikeres')
+                counter = counter+1
                 return True
-    print("igény foglalás: " + str(demand['end-points'][0])+"<->" +
+    print(str(counter)+". igény foglalás: " + str(demand['end-points'][0])+"<->" +
           str(demand['end-points'][1])+" st:" + str(demand['start-time'])+' - sikertelen')
+    counter = counter+1
     return False
 
 
 def letResourcesDeallocate(demand):
     # eloszor leelenorzi hogy a demand egyaltalan elindult e, es ha igen, akkor a lefoglalt circuitoknak visszaadja a kakaot
+    global counter
     bul = False
     for d in startedDemands:
         if (d == demand):
@@ -63,8 +67,9 @@ def letResourcesDeallocate(demand):
         for c in occupiedCircuits:
             if (c[1] == demand):
                 deallocateOneByOne(c[0], demand['demand'])
-        print('igény felszabaditasra: ' +
-              str(demand['end-points'][0]) + '<->' + str(demand['end-points'][1]) + ' st: ' + str(demand['end-time']))
+        print(str(counter)+'. igény felszabadítás: ' +
+              str(demand['end-points'][0]) + '<->' + str(demand['end-points'][1]) + ' st:' + str(demand['end-time']))
+        counter = counter+1
 
 
 def deallocateOneByOne(circuit, demandSize):
@@ -98,6 +103,8 @@ def startProgram(t):
 
 
 t = 0
+counter = 1
 while (t <= data['simulation']['duration']):
     startProgram(t)
     t = t+1
+# print(data)
