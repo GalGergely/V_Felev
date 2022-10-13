@@ -17,7 +17,6 @@ class Item extends Model
     protected $fillable = [
         'name',
         'description',
-        'password',
         'image',
     ];
 
