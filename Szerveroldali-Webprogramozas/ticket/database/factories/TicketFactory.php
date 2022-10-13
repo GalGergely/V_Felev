@@ -18,7 +18,8 @@ class TicketFactory extends Factory
     {
         return [
             'title' => fake()->sentence(),
-            'priority' => fake()->numberBetween(0,3),
+            'priority' => fake()->numberBetween(0, 3),
+            'done' => fake()->boolean(),
         ];
     }
 }

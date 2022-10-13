@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\TicketController;
 use Illuminate\Support\Facades\Route;
+use App\Modells\Ticket;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,9 +16,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::resource('tickets', TicketController::class)->middleware('auth');
+
+
 Route::get('/', function () {
-    return view('site.tickets');
-})->name('tickets');
+})->middleware(['auth'])->name('tickets');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

@@ -20,6 +20,15 @@ class Ticket extends Model
         'user_id',
     ];
 
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'done' => 'boolean',
+    ];
+
     public function comment()
     {
         return $this->hasMany(Comment::class);
