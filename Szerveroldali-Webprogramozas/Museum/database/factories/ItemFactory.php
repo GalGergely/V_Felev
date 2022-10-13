@@ -18,7 +18,7 @@ class ItemFactory extends Factory
     public function definition()
     {
         return [
-            'name' => fake()->name(),
+            'name' => fake()->word(),
             'description' => fake()->sentence(),
             'obtained' => fake()->date(),
         ];

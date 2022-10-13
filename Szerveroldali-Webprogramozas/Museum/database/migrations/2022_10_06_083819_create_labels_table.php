@@ -19,9 +19,6 @@ return new class extends Migration
             $table->boolean('display');
             $table->string('color');
             $table->timestamps();
-
-            $table->unsignedBigInteger('label_id');
-            $table->foreign('label_id')->references('id')->on('labels');
         });
     }
 
