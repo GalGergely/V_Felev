@@ -56,9 +56,9 @@
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             @auth
                             <li class="nav-item">
-                                <form action="{{route('logout')}}" method="post"></form>
-                                @csrf
-                                <a class="nav-link" href="{{route('logout')}}" onclick="event.preventDefault(); this.closest('form').subbmit()">Kijelentkezés</a>
+                                <form action="{{route('logout')}}" method="post">
+                                    <a class="nav-link" href="{{route('logout')}}" onclick="event.preventDefault(); this.closest('form').subbmit">Kijelentkezés</a>
+                                </form>
                             </li>
                             @else
                             <li class="nav-item">

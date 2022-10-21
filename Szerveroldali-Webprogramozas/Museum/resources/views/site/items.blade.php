@@ -17,7 +17,7 @@
         </thead>
         <tbody class="text-center">
             @foreach ($items as $item)
-            <tr class="table-warning">
+            <tr class="table-warning" onclick="window.open('{{route('items')}}')";>
                 <td>
                     <span class="badge rounded-pill bg-info fs-6">{{$item->name}}</span>
                 </td>

@@ -37,7 +37,12 @@ class ItemController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string',
+            'description' => 'required|string',
+            'obtained' => 'required|date',
+            'file' => 'file'
+        ]);
     }
 
     /**
@@ -84,5 +89,16 @@ class ItemController extends Controller
     public function destroy($id)
     {
         //
+    }
+    /**
+     * Display a listing of all tickets.
+     * TODO: Csak admin férjen hozzá!
+     */
+    public function all()
+    {
+        $items = Item::all()->sortByDesc(function ($item) {
+            return $item->obtained->sortByDesc('obtained')->first();
+        });
+        return view('site.items', ['items' => $items]);
     }
 }

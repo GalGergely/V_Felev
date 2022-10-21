@@ -22,7 +22,7 @@
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container-fluid mx-5">
-                <a class="navbar-brand" href="#">Items</a>
+                <a class="navbar-brand" href="{{route('dashboard')}}">Dashboard</a>
                 <button
                     class="navbar-toggler"
                     type="button"
@@ -37,7 +37,7 @@
                 <div class="collapse navbar-collapse" id="main-navbar">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link" href="{{route('items')}}">Nyitott feladatok</a>
+                            <a class="nav-link" href="{{route('items')}}">Items</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="lezart_feladatok.html">Lezárt feladatok</a>
@@ -56,9 +56,10 @@
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             @auth
                             <li class="nav-item">
-                                <form action="{{route('logout')}}" method="post"></form>
-                                @csrf
-                                <a class="nav-link" href="{{route('logout')}}" onclick="event.preventDefault(); this.closest('form').subbmit()">Kijelentkezés</a>
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <a class="nav-link" onclick="event.preventDefault(); this.closest('form').submit();" href="{{ route('logout') }}">Kijelentkezés</a>
+                                </form>
                             </li>
                             @else
                             <li class="nav-item">

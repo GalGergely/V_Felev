@@ -16,9 +16,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::resource('items', ItemController::class)->middleware('auth');
 
-
 Route::get('/', function () {
-    return view('dashboard');
+    return redirect()->route('items.index');
 })->middleware(['auth'])->name('items');
 
 Route::get('/dashboard', function () {
