@@ -1,0 +1,31 @@
+-l(length): rekordméret (bájtokban)
+-b: blokkméret (bájtokban)
+-B: fájl mérete blokkokban
+-T(tuple): rekordok száma
+-bf: blokkolási faktor (mennyi rekord fér el egy blokkban)
+-M: memória mérete blokkokban
+-V(R,A) - I(A): Az A oszlopban szereplő különböző értékek számát képméretnek hívjuk
+-ht(index): a fa magassága (B+ fa)
+
+Képletek:
+
+R - reláció
+W - lekérdezés
+B(R) = T(R) / bf(R)
+bf(R) = b / l(R)
+where A = x ==> T(W) = T(R) / V(R,A)
+WHERE A=x AND B=y ==> T(W) = T(R)*(1/V(R,A))*(1/V(R,B))
+WHERE A=x OR B=y ==> T(W) = T/V(R,B) + T/V(R,A) - T/(V(R,A)*V(R,B))
+
+I1 - index (sűrű)
+I2 - index (ritka)
+
+B(I1) = T(I1) / bf(I1) (T(I1) == T(R), mert ugyan annyi kulcs van, mint rekord)
+B(I2) = T(I2) / bf(I2) (T(I2) == B(R), mert ugyan annyi kulcs van, mint blokk)
+
+B+ fa, indexel:
+B(I) = B(1. levél szint) + B(2. levél szint) + ... + B(n-dik levél szint)
+B(n-dik levél szint) = T(R) / bf(I)
+B(n-1-dik levél szint) = B(n-dik levél szint) / bf(I)
+...
+B(1. levél szint) = B(2. levél szint) / bf(I)
