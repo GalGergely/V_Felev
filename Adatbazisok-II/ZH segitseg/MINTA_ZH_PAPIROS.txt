@@ -1,0 +1,163 @@
+Papiros ZH ADATB
+1. feladat:
+Beszúrás: 50,20,92
+
+		        73
+                  /            \
+           43|56                79
+        /    |     \          /    \
+15|39|40 43|45|49 56|70    73|75 79|80|83
+
+50-es beszúrás
+                        73
+            43|49|56               79
+15|39|40  43|45  49|50 56|70  73|75 79|80|83 
+
+20-as beszúrás
+                         49|73
+       39|43               56             79
+15|20  39|40 43|45    49|50 56|70    73|75  79|80|83
+92-es beszúrás
+                         49|73
+       39|43               56             79|83
+15|20  39|40 43|45    49|50 56|70    73|75  79|80 83|92
+
+2. feladat:
+a,
+1000000000001000000000000000101 ==> 00111010101110111101
+0  ==>  0/2 = 0 0 ==> 0
+
+10 ==> 10/2 = 5 0 ==> 1010
+	5/2 = 2 1
+	2/2 = 1 0
+	1/2 = 0 1
+
+15 ==> 15/2 = 7 1 ==> 1111
+	7/2 = 3 1
+	3/2 = 1 1
+	1/2 = 0 1
+
+1 ==> 1 / 2 = 0 1 ==> 1
+
+b,
+111010111010101101 ==> 000000000001001000101
+
+1011 ==> 2^0 + 2^1 + 2^3 = 1 + 2 + 8 = 11
+10   ==> 2^1                         = 2
+11   ==> 2^0 + 2^1                   = 3
+1    ==> 2^0                         = 1
+
+000000000001001000101
+
+3. feladat
+
+Beszúrás: 1011, 1111, 0110
+Küszöb: 2.9
+n = 4, i = 2
+Alap:
+0100      0010
+  |         |
+1100 0101 1010 0111
+0000 1101 1110 0011
+---- ---- ---- ----
+ 00   01   10   11
+
+Átlagja: 11/4 = 2.5
+
+1011 beszúrása:
+
+          0010      1011
+            |        |
+     0101 1010      0111
+0000 1101 1110 0100 0011
+---- ---- ---- ---- ----
+ 000  001  010  100  011
+
+Átlag: 12/5 = 2.4
+
+
+1111 beszúrása:
+                    1111
+          0010      1011
+            |        |
+     0101 1010 1100 0111
+0000 1101 1110 0100 0011
+---- ---- ---- ---- ----
+ 000  001  010  100  011
+
+Átlag: 13/5 = 2.6
+
+
+0110 beszúrása:
+
+          0110      1111
+          0010      1011
+            |         |
+     0101 1010 1100 0111
+0000 1101 1110 0100 0011
+---- ---- ---- ---- ----
+ 000  001  010  100  011
+
+Átlag: 14/5 = 2.8
+
+
+4.feladat:
+
+T(R) = 1.600.000
+b = 8192 bytes
+L(R) = 128 bytes
+V(R,A) = 500
+W --> SELECT c1, c2 FROM R WHERE A='x';
+
+Mekkora a B(R), B(W), ha L(W) = 32 bytes?
+B(R) = T(R) / bf(R) = 1.600.000 / bf(R) = 1.600.000 / 64 = 25.000 
+bf(R) = b / L(R) = 8.192 / 128 = 64
+
+B(W) = T(W) / bf(W) = 3200 / 256 = 12,5 ~ 13
+T(W) = T(R) / V(R,A) = 1.600.000 / 500 = 3.200
+bf(W) = b / L(W) = 256
+
+5. feladat:
+SELECT distinct SEGMENT_NAME, BYTES FROM DBA_EXTENTS where SEGMENT_NAME =
+    (SELECT CLUSTER_NAME FROM DBA_CLUSTERS WHERE OWNER='LKPETER' and CLUSTER_TYPE = 'INDEX');
+
+6. feladat:
+CREATE or replace function nt_tables return varchar2 is
+    CURSOR curs1 IS select SEGMENT_NAME table_name from dba_extents where SEGMENT_NAME in (select distinct table_name from DBA_TAB_COLUMNS where DATA_TYPE = 'NUMBER' AND TABLE_NAME in
+    (select distinct TABLE_NAME from dba_tables where owner = 'LKPETER' and CLUSTER_NAME is null)) group by SEGMENT_NAME having 2 > count(distinct FILE_ID) order by SEGMENT_NAME;
+    rec curs1%ROWTYPE;
+    ret VARCHAR2(20000);
+BEGIN
+  OPEN curs1;
+  LOOP
+    FETCH curs1 INTO rec;
+    EXIT WHEN curs1%NOTFOUND;
+    ret := ret || rec.table_name || ', ';
+  END LOOP;
+  CLOSE curs1;
+  DBMS_OUTPUT.PUT_LINE(ret);
+  return ret;
+END;
+
+select nt_tables() from dual;
+
+7. feladat:
+CREATE OR REPLACE PROCEDURE lt10 IS
+COUNTER NUMBER;
+BEGIN
+    FOR RECORD IN (SELECT FILE_ID, BLOCK_ID, BLOCKS FROM DBA_EXTENTS WHERE OWNER='NIKOVITS' AND SEGMENT_NAME='CIKK' ORDER BY 1, 2, 3)
+    LOOP
+        FOR i in 1..RECORD.BLOCKS LOOP
+            SELECT COUNT(*) INTO COUNTER FROM NIKOVITS.CIKK
+            WHERE DBMS_ROWID.ROWID_RELATIVE_FNO(ROWID) = RECORD.FILE_ID
+            AND DBMS_ROWID.ROWID_BLOCK_NUMBER(ROWID) = RECORD.BLOCK_ID + i - 1;
+            IF 10 > COUNTER then
+                DBMS_OUTPUT.PUT_LINE(RECORD.FILE_ID || ';' || TO_CHAR(RECORD.BLOCK_ID + i - 1) || ';' || COUNTER);
+            end if;
+        END LOOP;
+    END LOOP;
+END;
+
+call lt10();
+
+
