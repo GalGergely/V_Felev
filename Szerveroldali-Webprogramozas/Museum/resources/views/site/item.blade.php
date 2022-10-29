@@ -35,9 +35,11 @@
         </div>
         <div class="d-flex">
             @foreach ($item->labels as $label)
-                <span class="badge rounded-pill bg-info fs-6" data-tor="bg({{$label->color}})">{{$label->color}} {{$label->name}}</span>
-                <!--HELP: miert nem mukodik itt a data tor atalitas, https://toruskit.com/docs/components/badges/ -->
-                <span class="badge" data-tor="bg(#269389)">#269389</span>
+                @if ($label->display=='1')
+                    <span class="badge rounded-pill bg-info fs-6" data-tor="bg({{$label->color}})">{{$label->color}} {{$label->name}}</span>
+                    <!--HELP: miert nem mukodik itt a data tor atalitas, https://toruskit.com/docs/components/badges/ -->
+                    <span class="badge" data-tor="bg(#269389)">#269389</span>
+                @endif
             @endforeach
         </div>
     </div>

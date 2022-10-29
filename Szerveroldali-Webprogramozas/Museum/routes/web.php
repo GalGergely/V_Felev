@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth')->group(function () {
     Route::get('items/create', [ItemController::class, 'create'])->name('items.create');
     Route::get('labels/create', [LabelController::class, 'create'])->name('labels.create');
+    Route::get('labels', [LabelController::class, 'index'])->name('labels.index');
 
     Route::resource('items', ItemController::class);
     Route::resource('labels', LabelController::class);

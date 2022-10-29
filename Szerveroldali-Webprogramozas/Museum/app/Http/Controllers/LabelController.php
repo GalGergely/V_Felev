@@ -95,4 +95,10 @@ class LabelController extends Controller
     {
         //
     }
+
+    public function all()
+    {
+        $labels = Label::all();
+        return view('site.labels', ['labels' => $labels]);
+    }
 }

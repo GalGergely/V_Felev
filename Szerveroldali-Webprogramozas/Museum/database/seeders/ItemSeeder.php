@@ -16,6 +16,11 @@ class ItemSeeder extends Seeder
      */
     public function run()
     {
-        Item::factory(10)->create();
+        $arr = ['The Seated Scribe', 'Vedus de Milo', 'Winged Victory of Sanithrace', 'Apollo of Piombino', 'Diana of Versailles', 'Dying Slave', 'Apollo Sauroctonos', 'Marcellus as Hermes Logios', 'Ship of fools', 'Death of the Virgin', 'The fortune teller'];
+        for ($i = 0; $i < 11; $i++) {
+            Item::factory()->create([
+                'name' => $arr[$i],
+            ]);
+        }
     }
 }

@@ -9,9 +9,9 @@
     <table class="table align-middle table-hover">
         <thead class="text-center table-light">
             <tr>
-                <th style="width: 10%">Name</th>
+                <th style="width: 30%">Name</th>
                 <th style="width: 20%">Description</th>
-                <th style="width: 40%">Date of acquisition</th>
+                <th style="width: 20%">Date of acquisition</th>
                 <th style="width: 30%">Image</th>
             </tr>
         </thead>

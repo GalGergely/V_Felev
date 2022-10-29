@@ -39,6 +39,9 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{route('items')}}">Items</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{route('labels.index')}}">Labels</a>
+                        </li>
                         @if (Auth::user()->is_admin)
                         <li class="nav-item">
                             <!--TODO: admin -->
