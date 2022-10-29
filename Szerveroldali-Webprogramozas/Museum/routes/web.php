@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\LabelController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,14 +15,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::resource('items', ItemController::class)->middleware('auth');
+Route::middleware('auth')->group(function () {
+    Route::get('items/create', [ItemController::class, 'create'])->name('items.create');
+    Route::get('labels/create', [LabelController::class, 'create'])->name('labels.create');
 
-Route::get('/', function () {
-    return redirect()->route('items.index');
-})->middleware(['auth'])->name('items');
+    Route::resource('items', ItemController::class);
+    Route::resource('labels', LabelController::class);
+    Route::post('items/{item}/comment', [ItemController::class, 'newComment'])->name('items.newComment');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+    Route::get('/', function () {
+        return redirect()->route('items.index');
+    })->name('items');
+
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->middleware(['verified'])->name('dashboard');
+});
 
 require __DIR__ . '/auth.php';

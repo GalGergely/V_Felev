@@ -17,7 +17,7 @@
         </thead>
         <tbody class="text-center">
             @foreach ($items as $item)
-            <tr class="table-warning" onclick="window.open('{{route('items')}}')";>
+            <tr class="table-warning" onclick="location.href='{{route('items.show', ['item' => $item->id])}}'";>
                 <td>
                     <span class="badge rounded-pill bg-info fs-6">{{$item->name}}</span>
                 </td>
@@ -32,5 +32,5 @@
                 </td>
             </tr>
         @endforeach
-
+        {{ $items->links() }}
 @endsection

@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="da7914f8-e73e-4ae1-9cf9-5ed5deb5ef5a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../../Konkurens-Programozas/Gyak_3/Hazi/Hazi.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../Konkurens-Programozas/Gyak_3/Hazi/src/MyThread.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../Konkurens-Programozas/Gyak_3/Hazi/src/counterTread.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../Konkurens-Programozas/Gyak_3/orai/src/ThreadSafeMutableInteger.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Konkurens-Programozas/Gyak_2/ropzh/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Konkurens-Programozas/Gyak_2/ropzh/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Szerveroldali-Webprogramozas/Museum/resources/views/layouts/layout.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/../../Szerveroldali-Webprogramozas/Museum/resources/views/layouts/layout.blade.php" afterDir="false" />
-    </list>
+    <list default="true" id="da7914f8-e73e-4ae1-9cf9-5ed5deb5ef5a" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -16,6 +9,9 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="2G5XMoeT2mwrnUQWnjCtVFbXZ9D" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -27,7 +23,7 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "C:/egyetem/V_Felev/Konkurens-Programozas/Gyak_2/ropzh"
+    "last_opened_file_path": "C:/egyetem/V_Felev/Telekomunikacios-halozatok/Gyak_2"
   }
 }]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />

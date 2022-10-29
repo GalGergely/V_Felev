@@ -10,26 +10,20 @@ public class Main {
         for (int i = 0; i < 10; i++) {
             Thread t = new Thread() {
                 public void run() {
-                    for (int j = 0; j <10000 ; j++) {
-                        System.out.println(tsmi.addAndGet(j));
+                    for (int j = 0; j <10 ; j++) {
+                        System.out.println(tsmi.getAndIncrement());
                     }
                 }
             };
             t.start();
             ts[i]=t;
         }
-        int[] biggggg = new int[]{Integer.MAX_VALUE};
-        ExecutorService ex = Executors.newFixedThreadPool(10);
-        for (int i = 0; i <1000000000; i++) {
-            ex.submit(()->{
-                biggggg[0]-= ThreadLocalRandom.current().nextInt(10);
-            });
-        }
-        ex.shutdown();
-        try {
-            ex.awaitTermination(10000, TimeUnit.MILLISECONDS);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+        for (int i = 0; i < 10; i++) {
+            try {
+                ts[i].join();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
 
 

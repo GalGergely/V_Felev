@@ -14,8 +14,14 @@ class Comment extends Model
      *
      * @var array<int, string>
      */
+
+    //HELP: itt miert kell a fillablebe tenni mindent.
     protected $fillable = [
         'text',
+        'filename',
+        'filename_hash',
+        'user_id',
+        'ticket_id',
     ];
 
     public function user()

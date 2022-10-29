@@ -19,7 +19,7 @@ class LabelFactory extends Factory
         return [
             'name' => fake()->name(),
             'display' => fake()->boolean(),
-            'color' => fake()->colorName(),
+            'color' => fake()->hexColor(),
         ];
     }
 }

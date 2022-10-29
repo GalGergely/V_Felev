@@ -20,9 +20,9 @@ class UserFactory extends Factory
     {
         return [
             'name' => fake()->name(),
-            'email' => preg_replace('/@example\..*/', '@inf.elte.hu', fake()->unique()->safeEmail),
+            'email' => preg_replace('/@example\..*/', '@szerveroldali.hu', fake()->unique()->safeEmail),
             'email_verified_at' => now(),
-            'password' => Hash::make('adminpwd'), // password
+            'password' => Hash::make('password'), // password
             'remember_token' => Str::random(10),
             'is_admin' => false,
         ];

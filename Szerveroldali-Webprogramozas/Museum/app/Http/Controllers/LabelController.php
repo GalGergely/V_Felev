@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Item;
+use App\Models\Label;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class ItemController extends Controller
+class LabelController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,10 +15,10 @@ class ItemController extends Controller
      */
     public function index()
     {
-        //HELP: nincs datum szerint sortolas prainatenel
-        $items = Item::paginate(6);
-        return view('site.items', ['items' => $items]);
+        $labels = Label::all();
+        return view('site.labels', ['labels' => $labels]);
     }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -27,7 +27,7 @@ class ItemController extends Controller
     public function create()
     {
         if (Auth::user()->is_admin) {
-            return view('site.item_form');
+            return view('site.label_form');
         } else {
             abort(404);
         }
@@ -43,14 +43,11 @@ class ItemController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string',
-            'description' => 'required|string',
-            'obtained' => 'required|date',
-            'file' => 'file'
+            'display' => 'required|boolean',
+            'color' => 'required|string'
         ]);
-        //HELP: nem mukodik a beillesztes. az obtaineddel van valami gond, hiaba megy at a validaten
-        $validated['file'] = 'asdasd';
-        $item = Item::create($validated);
-        return redirect()->route('items.show', ['item' => $item->id]);
+        $label = Label::create($validated);
+        return redirect()->route('items');
     }
 
     /**
@@ -61,8 +58,8 @@ class ItemController extends Controller
      */
     public function show($id)
     {
-        $item = Item::findOrFail($id);
-        return view('site.item', ['item' => $item]);
+        $label = Label::findOrFail($id);
+        return view('site.label', ['label' => $label]);
     }
 
     /**
@@ -97,33 +94,5 @@ class ItemController extends Controller
     public function destroy($id)
     {
         //
-    }
-    /**
-     * Display a listing of all tickets.
-     * TODO: Csak admin férjen hozzá!
-     */
-    public function all()
-    {
-        $items = Item::paginate(6)->sortByDesc(function ($item) {
-            return $item->obtained->sortByDesc('obtained')->first();
-        });
-        return view('site.items', ['items' => $items]);
-    }
-
-    public function newComment(Request $request, $id)
-    {
-        $validated = $request->validate([
-            'text' => 'required|string',
-            'file' => 'file',
-        ]);
-
-        $item = Item::findOrFail($id);
-
-        $item->comments()->create([
-            'text' => $validated['text'],
-            'user_id' => Auth::id(),
-        ]);
-
-        return redirect()->route('items.show', ['item' => $item->id]);
     }
 }

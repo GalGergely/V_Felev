@@ -39,18 +39,15 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{route('items')}}">Items</a>
                         </li>
+                        @if (Auth::user()->is_admin)
                         <li class="nav-item">
-                            <a class="nav-link" href="lezart_feladatok.html">Lezárt feladatok</a>
+                            <!--TODO: admin -->
+                            <a class="nav-link" href="{{route('items.create')}}">New Item</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="uj_feladat.html">Új feladat</a>
+                            <a class="nav-link" href="{{route('labels.create')}}">New Label</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="felhasznalok.html">Felhasználók (ADMIN)</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="feladatok.html">Összes feladat (ADMIN)</a>
-                        </li>
+                        @endif
                     </ul>
                     <div class="d-flex">
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
