@@ -1,13 +1,16 @@
 @extends('layouts.layout')
 
-@section('title', 'New Label')
+@section('title', @isset($label) ? 'Edit Label' : 'New Label')
 
 @section('content')
         <div class="container-fluid px-5 my-3">
-            <h1 class="ps-3">New Label</h1>
+            <h1 class="ps-3">{{isset($label) ? 'Edit Label' : 'New Label'}}</h1>
             <hr />
-            <form method="post" action="{{route('labels.store')}}">
+            <form method="post" action="{{ isset($label) ? route('labels.update', ['label' => $label->id]) : route('labels.store')}}">
                 @csrf
+                @isset($label)
+                    @method('put')
+                @endisset
                 <div class="row mb-3">
                     <div class="col">
                         <input
@@ -16,20 +19,18 @@
                             placeholder="Label Name"
                             name="name"
                             id="name"
-                            value="{{old('name')}}"
+                            value="{{old('name', $label->name ?? '')}}"
                         />
-                        <!--HELP: itt miert nem kerul kiirasra a hiba tenylegesen-->
-                        @error('title')
+                        @error('name')
                             <div class="invalid-feedback">
                                 {{ $message }}
                             </div>
                         @enderror
                     </div>
                     <div class="col">
-                        <!--HELP:miert nem tartja az allapotot?-->
                             <select class="form-select" name="display" id="display">
-                                <option value="0" {{ old('display', $labels->display ?? '') == 0 ? 'selected' : '' }} >Displayable</option>
-                                <option value="1" {{ old('display', $labels->display ?? '') == 0 ? 'selected' : '' }}>Not displayable</option>
+                                <option value="1" {{ old('display', $label->display ?? '') == 1 ? 'selected' : '' }} >Displayable</option>
+                                <option value="0" {{ old('display', $label->display ?? '') == 0 ? 'selected' : '' }}>Not displayable</option>
                             </select>
                         @error('display')
                         <div class="invalid-feedback">
@@ -39,9 +40,8 @@
                     </div>
                 </div>
                 <div class="mb-3">
-                    <!--HELP: a tobbi error miert nem jelenik meg?,   a descet nem tartja meg az allapottartas-->
                     <label for="color">Label Color: </label>
-                    <input type="color"  @error('color') is-invalid @enderror id="color" name="color" value="{{old('color')}}">
+                    <input type="color"  @error('color') is-invalid @enderror id="color" name="color"value="{{old('color', $label->color ?? '')}}">
                 @error('description')
                     <div class="invalid-feedback">
                         {{ $message }}

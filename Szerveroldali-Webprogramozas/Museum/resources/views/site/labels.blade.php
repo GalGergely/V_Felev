@@ -17,7 +17,7 @@
                 @if ($label->display=='1')
                 <tr class="table-warning" onclick="location.href='{{route('labels.show', ['label' => $label->id])}}'";>
                      <td>
-                        <span class="badge rounded-pill bg-info fs-6">{{$label->name}}</span>
+                        <span class="badge rounded-pill fs-6" style="background-color: {{$label->color}}">{{$label->name}}</span>
                     </td>
                 </tr>
                 @endif
@@ -27,7 +27,7 @@
                 @if ($label->display=='0')
                 <tr class="table-danger" onclick="location.href='{{route('labels.show', ['label' => $label->id])}}'";>
                      <td>
-                        <span class="badge rounded-pill bg-info fs-6">{{$label->name}}</span>
+                        <span class="badge rounded-pill fs-6" style="background-color: {{$label->color}}">{{$label->name}}</span>
                     </td>
                 </tr>
                 @endif

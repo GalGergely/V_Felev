@@ -21,7 +21,7 @@ class LabelSeeder extends Seeder
         for ($i = 0; $i < 9; $i++) {
             $arr = ['nice', 'awsome', 'beautiful', 'agonizing', 'lively', 'anbitious', 'elegant', 'honest', 'impolite'];
             $tmpItems = $items->random(5);
-            Label::factory()->hasAttached($tmpItems, ['is_labeled' => true])->create([
+            Label::factory()->hasAttached($tmpItems)->create([
                 'name' => $arr[$i],
             ]);
         }

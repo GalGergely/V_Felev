@@ -23,6 +23,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('items', ItemController::class);
     Route::resource('labels', LabelController::class);
     Route::post('items/{item}/comment', [ItemController::class, 'newComment'])->name('items.newComment');
+    Route::post('items/{item}/{comment}', [ItemController::class, 'deleteComment'])->name('items.deleteComment');
+    Route::post('comment_form/{comment}', [ItemController::class, 'editComment'])->name('items.editComment');
+    Route::post('comment/{comment}', [ItemController::class, 'updateComment'])->name('items.updateComment');
 
     Route::get('/', function () {
         return redirect()->route('items.index');

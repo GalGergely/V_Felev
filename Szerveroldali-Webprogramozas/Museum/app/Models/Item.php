@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Item extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -23,16 +24,7 @@ class Item extends Model
 
     public function labeled()
     {
-        return $this->belongsToMany(Label::class)
-            ->withPivot('is_labeled')
-            ->wherePivot('is_labeled', 1);
-    }
-
-    public function notLabeled()
-    {
-        return $this->belongsToMany(Label::class)
-            ->withPivot('is_labeled')
-            ->wherePivot('is_labeled', 0);
+        return $this->belongsToMany(Label::class);
     }
 
     public function comments()
@@ -43,5 +35,17 @@ class Item extends Model
     public function labels()
     {
         return $this->belongsToMany(Label::class);
+    }
+
+    public function isLabeledWith()
+    {
+        $labels = $this->labels();
+        $ret = False;
+        foreach ($labels as $label) {
+            if ($label) {
+                $ret = True;
+            }
+        }
+        return $ret;
     }
 }

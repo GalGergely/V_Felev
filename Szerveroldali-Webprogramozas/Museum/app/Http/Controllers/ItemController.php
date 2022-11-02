@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comment;
 use App\Models\Item;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class ItemController extends Controller
 {
@@ -15,8 +18,7 @@ class ItemController extends Controller
      */
     public function index()
     {
-        //HELP: nincs datum szerint sortolas prainatenel
-        $items = Item::paginate(6);
+        $items = Item::orderBy('obtained', 'desc')->paginate(6);
         return view('site.items', ['items' => $items]);
     }
     /**
@@ -45,11 +47,25 @@ class ItemController extends Controller
             'name' => 'required|string',
             'description' => 'required|string',
             'obtained' => 'required|date',
-            'file' => 'file'
+            'labels' => 'nullable|array',
+            'labels.*' => 'numeric|integer|exists:labels,id',
+            'image' => 'nullable|file|image|mimes:jpg,png,bmp|max:4096'
         ]);
-        //HELP: nem mukodik a beillesztes. az obtaineddel van valami gond, hiaba megy at a validaten
-        $validated['file'] = 'asdasd';
+
+        $cover_image_path = null;
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $cover_image_path = 'image' . Str::random(10) . '.' . $file->getClientOriginalExtension();
+            Storage::disk('public')->put($cover_image_path, $file->get());
+        }
+
+        $validated['image'] = $cover_image_path;
         $item = Item::create($validated);
+
+        if (isset($validated['labels'])) {
+            $item->labels()->sync($validated['labels']);
+        }
+
         return redirect()->route('items.show', ['item' => $item->id]);
     }
 
@@ -73,7 +89,11 @@ class ItemController extends Controller
      */
     public function edit($id)
     {
-        //
+        $item = Item::findOrFail($id);
+        if (!Auth::user()->is_admin) {
+            abort(401);
+        }
+        return view('site.item_form', ['item' => $item]);
     }
 
     /**
@@ -85,7 +105,37 @@ class ItemController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string',
+            'description' => 'required|string',
+            'obtained' => 'required|date',
+            'labels' => 'nullable|array',
+            'labels.*' => 'numeric|integer|exists:labels,id',
+            'image' => 'nullable|file|image|max:4096'
+        ]);
+
+
+
+        $item = Item::findOrFail($id);
+        if (!Auth::user()->is_admin) {
+            abort(401);
+        }
+
+        $cover_image_path = $item->image;
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $cover_image_path = 'image' . Str::random(10) . '.' . $file->getClientOriginalExtension();
+            Storage::disk('public')->put($cover_image_path, $file->get());
+        }
+
+        $validated['image'] = $cover_image_path;
+
+        $item->update($validated);
+        if (isset($validated['labels'])) {
+            $item->labels()->sync($validated['labels']);
+        }
+
+        return redirect()->route('items.show', ['item' => $item->id]);
     }
 
     /**
@@ -96,7 +146,13 @@ class ItemController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $item = Item::findOrFail($id);
+        if (!Auth::user()->is_admin) {
+            abort(401);
+        }
+        $item->delete();
+        $items = Item::paginate(6);
+        return view('site.items', ['items' => $items]);
     }
     /**
      * Display a listing of all tickets.
@@ -125,5 +181,40 @@ class ItemController extends Controller
         ]);
 
         return redirect()->route('items.show', ['item' => $item->id]);
+    }
+
+    public function deleteComment($itemid, $id)
+    {
+        $comment = Comment::findOrFail($id);
+        $item = Item::findOrFail($itemid);
+        if (!Auth::user()->is_admin && $comment->user->id != Auth::id()) {
+            abort(401);
+        }
+        $comment->delete();
+        return redirect()->route('items.show', ['item' => $item->id]);
+    }
+
+    public function editComment($id)
+    {
+        $comment = Comment::findOrFail($id);
+        if (!Auth::user()->is_admin && $comment->user->id != Auth::id()) {
+            abort(401);
+        }
+        return view('site.comment_form', ['comment' => $comment]);
+    }
+
+    public function updateComment(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'text' => 'required|string',
+            'file' => 'file',
+        ]);
+        $validated['file'] = 'asdasd';
+        $comment = Comment::findOrFail($id);
+        if (!Auth::user()->is_admin && $comment->user->id != Auth::id()) {
+            abort(401);
+        }
+        $comment->update($validated);
+        return redirect()->route('items.index');
     }
 }

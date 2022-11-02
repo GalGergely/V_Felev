@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Comment extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -15,7 +16,6 @@ class Comment extends Model
      * @var array<int, string>
      */
 
-    //HELP: itt miert kell a fillablebe tenni mindent.
     protected $fillable = [
         'text',
         'filename',

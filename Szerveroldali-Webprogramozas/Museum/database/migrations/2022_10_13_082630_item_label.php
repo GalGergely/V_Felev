@@ -15,7 +15,6 @@ return new class extends Migration
     {
         Schema::create('item_label', function (Blueprint $table) {
             $table->id();
-            $table->boolean('is_labeled')->default(false);
 
             $table->unsignedBigInteger('item_id');
             $table->foreign('item_id')->references('id')->on('items');

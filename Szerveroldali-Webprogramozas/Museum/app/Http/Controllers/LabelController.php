@@ -70,7 +70,11 @@ class LabelController extends Controller
      */
     public function edit($id)
     {
-        //
+        $label = Label::findOrFail($id);
+        if (!Auth::user()->is_admin) {
+            abort(401);
+        }
+        return view('site.label_form', ['label' => $label]);
     }
 
     /**
@@ -82,7 +86,17 @@ class LabelController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string',
+            'display' => 'required|boolean',
+            'color' => 'required|string'
+        ]);
+        $label = Label::findOrFail($id);
+        if (!Auth::user()->is_admin) {
+            abort(401);
+        }
+        $label->update($validated);
+        return redirect()->route('labels.show', ['label' => $label->id]);
     }
 
     /**
@@ -93,7 +107,13 @@ class LabelController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $label = Label::findOrFail($id);
+        if (!Auth::user()->is_admin) {
+            abort(401);
+        }
+        $label->delete();
+        $labels = Label::all();
+        return view('site.labels', ['labels' => $labels]);
     }
 
     public function all()

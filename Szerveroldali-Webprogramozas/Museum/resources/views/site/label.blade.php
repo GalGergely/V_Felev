@@ -6,15 +6,19 @@
 <div class="container-fluid px-5 my-3">
     <div class="d-flex">
         <h1 class="ps-3 me-auto">{{$label->name}}
-        @if (Auth::user()->is_admin)
-        <span class="badge bg-danger">
-        <button class="btn btn-primary mx-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Szerkesztés">
-            <i class="fa-solid fa-pen-to-square fa-fw fa-xl"></i>
-        </button>
-        <button class="btn btn-danger mx-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Törlés">
-            <i class="fa-solid fa-trash fa-fw fa-xl"></i>
-        </button>
-        @endif
+            @if (Auth::user()->is_admin)
+            <span class="badge bg-danger">
+            <a href="{{ route('labels.edit', ['label' => $label->id]) }}" class="btn btn-primary mx-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Szerkesztés">
+                <i class="fa-solid fa-pen-to-square fa-fw fa-xl"></i>
+            </a>
+            <form action="{{ route('labels.destroy', ['label' => $label->id ]) }}" method="post">
+                @csrf
+                @method('delete')
+                <button class="btn btn-danger mx-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Törlés" type="submit">
+                    <i class="fa-solid fa-trash fa-fw fa-xl"></i>
+                </button>
+            </form>
+            @endif
     </div>
     <hr />
     <div class="container-fluid px-5 my-3">
