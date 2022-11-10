@@ -4,38 +4,74 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Main {
-    public static Runnable getTask(int n, ArrayList<Integer> l, boolean isSynchronised,boolean isOnebyOne, int finalI) {
-        Runnable r = new Runnable() {
+    public static Runnable doShit(int n, List<Integer> l, boolean isInSync, boolean isInOrder, int finalI) {
+        Runnable ret = new Runnable() {
             @Override
             public void run() {
-                for(int j = finalI; j<1000000; j=j+n) {
-                    if (isSynchronised) {
-                        synchronized (l) {
-                            System.out.println(j);
-                            l.add(j);
+                int i = finalI;
+                while (i <= 100) {
+                    if (isInSync) {
+                        if (isInOrder) {
+                            if (i % n == finalI) {
+                                if (l.size() == 0) {
+                                    synchronized (l) {
+                                        l.add(i);
+                                        i = i + n;
+                                    }
+                                } else {
+                                    if (l.get(l.size() - 1) == i - 1) {
+                                        synchronized (l) {
+                                            l.add(i);
+                                            i = i + n;
+                                        }
+                                    }
+                                }
+                            }
+                        } else {
+                            if (i % n == finalI) {
+                                synchronized (l) {
+                                    l.add(i);
+                                    i = i + n;
+                                }
+                            }
                         }
                     } else {
-                        l.add(j);
+                        if (i % n == finalI) {
+                            l.add(i);
+                            i = i + n;
+                        }
                     }
                 }
             }
         };
-        return r;
+        return ret;
     }
-    public static void main(String[] args) {
-        long t1=System.nanoTime();
-        useThreads(10,true,false);
-        long t2=System.nanoTime();
-        System.out.println(t2-t1);
-    }
-    public static void useThreads(int n, boolean isSynchronised, boolean isOnebyOne) {
-        ArrayList<Integer> l = new ArrayList<>();
+    public static void useThreads(int n, boolean b1, boolean b2) {
+        List<Integer> l = new ArrayList<>();
         ExecutorService e = Executors.newFixedThreadPool(n);
         for (int i = 0; i < n; i++) {
-            int finalI = i;
-            e.execute(getTask(n,l,isSynchronised,isOnebyOne,finalI));
+            final int finalI = i;
+            e.execute(doShit(n, l, b1, b2, finalI));
         }
-        System.out.println(l.size());
+        e.shutdown();
+
+    }
+    public static void main(String[] args) throws InterruptedException {
+        int n = 3;
+        long start = System.nanoTime();
+        useThreads(n,true,true);
+        long end = System.nanoTime();
+        System.out.println(end-start);
+
+        start = System.nanoTime();
+        useThreads(n,true,false);
+        end = System.nanoTime();
+        System.out.println(end-start);
+
+        start = System.nanoTime();
+        useThreads(n,false,false);
+        end = System.nanoTime();
+        System.out.println(end-start);
     }
 }
 

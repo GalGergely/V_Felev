@@ -1,3 +1,5 @@
+package hf3.Hazi_3.src;
+
 import java.util.ArrayList;
 
 public class ThreadSafeMutableIntegerArray {
@@ -12,17 +14,15 @@ public class ThreadSafeMutableIntegerArray {
         }
     }
 
-    public final synchronized int get(int index) throws InterruptedException {
-        int get;
-        this.locks[index].wait();
-        get = this.intArray[index];
-        this.locks[index].notifyAll();
-        return get;
+    public final int get(int index) throws InterruptedException {
+        synchronized (locks[index]) {
+            return intArray[index];
+        }
     }
-    public final synchronized void set(int nv, int index) throws InterruptedException {
-        this.locks[index].wait();
-        this.intArray[index] = nv;
-        this.locks[index].notifyAll();
+    public final void set(int nv, int index) throws InterruptedException {
+        synchronized (locks[index]) {
+            intArray[index] = nv;
+        }
     }
 
     public static void main(String[] args) {
@@ -30,7 +30,7 @@ public class ThreadSafeMutableIntegerArray {
         ThreadSafeMutableIntegerArray ta = new ThreadSafeMutableIntegerArray(2);
         for (int i = 0; i < 10; i++) {
             Thread t;
-            if(i % 2 ==0) {
+            if(i % 2 == 0) {
                  t = new Thread() {
                     public void run() {
                         for (int j = 0; j < 10000; j++) {
@@ -61,6 +61,10 @@ public class ThreadSafeMutableIntegerArray {
             th.add(t);
             t.start();
         }
-
+        try {
+            System.out.println(ta.get(0)+" "+ta.get(1));
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
