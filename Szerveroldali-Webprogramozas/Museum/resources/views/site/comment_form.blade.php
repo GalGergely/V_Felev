@@ -13,4 +13,4 @@
         <button type="submit" class="btn btn-primary">Comment</button>
     </div>
 </form>
-@endsectionz
+@endsection

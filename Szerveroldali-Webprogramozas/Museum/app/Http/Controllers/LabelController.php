@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Label;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class LabelController extends Controller
 {
@@ -47,7 +48,8 @@ class LabelController extends Controller
             'color' => 'required|string'
         ]);
         $label = Label::create($validated);
-        return redirect()->route('items');
+        Session::flash('label_created', $label->name);
+        return redirect()->route('labels.index');
     }
 
     /**
@@ -96,7 +98,8 @@ class LabelController extends Controller
             abort(401);
         }
         $label->update($validated);
-        return redirect()->route('labels.show', ['label' => $label->id]);
+        Session::flash('label_updated', $label->name);
+        return redirect()->route('labels.index');
     }
 
     /**
@@ -113,7 +116,8 @@ class LabelController extends Controller
         }
         $label->delete();
         $labels = Label::all();
-        return view('site.labels', ['labels' => $labels]);
+        Session::flash('label_deleted', $label->name);
+        return redirect()->route('labels.index');
     }
 
     public function all()

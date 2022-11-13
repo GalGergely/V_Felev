@@ -7,6 +7,8 @@ use App\Models\Item;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Str;
 
 class ItemController extends Controller
@@ -65,7 +67,7 @@ class ItemController extends Controller
         if (isset($validated['labels'])) {
             $item->labels()->sync($validated['labels']);
         }
-
+        Session::flash('item_created', $item->name);
         return redirect()->route('items.show', ['item' => $item->id]);
     }
 
@@ -135,6 +137,8 @@ class ItemController extends Controller
             $item->labels()->sync($validated['labels']);
         }
 
+        Session::flash('item_updated', $item->name);
+
         return redirect()->route('items.show', ['item' => $item->id]);
     }
 
@@ -152,7 +156,8 @@ class ItemController extends Controller
         }
         $item->delete();
         $items = Item::paginate(6);
-        return view('site.items', ['items' => $items]);
+        Session::flash('item_deleted', $item->name);
+        return redirect()->route('items', ['items' => $items]);
     }
     /**
      * Display a listing of all tickets.
@@ -180,6 +185,8 @@ class ItemController extends Controller
             'user_id' => Auth::id(),
         ]);
 
+        Session::flash('comment_created', Auth::user()->name);
+
         return redirect()->route('items.show', ['item' => $item->id]);
     }
 
@@ -190,7 +197,9 @@ class ItemController extends Controller
         if (!Auth::user()->is_admin && $comment->user->id != Auth::id()) {
             abort(401);
         }
+        $us=$comment->user;
         $comment->delete();
+        Session::flash('comment_deleted', $us->name);
         return redirect()->route('items.show', ['item' => $item->id]);
     }
 
@@ -215,6 +224,8 @@ class ItemController extends Controller
             abort(401);
         }
         $comment->update($validated);
-        return redirect()->route('items.index');
+
+        Session::flash('comment_updated', $comment->user->name);
+        return redirect()->route('items.show', ['item' => $comment->item->id]);
     }
 }

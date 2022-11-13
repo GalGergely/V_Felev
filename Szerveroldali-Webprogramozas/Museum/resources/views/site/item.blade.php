@@ -5,6 +5,31 @@
 @section('content')
 
 <div class="container-fluid px-5 my-3">
+        @if (Session::has('item_created'))
+            <div class="alert alert-success" role="alert">
+                New item "{{ Session::get('item_created') }}" has been successfuly created.
+            </div>
+        @endif
+        @if (Session::has('item_updated'))
+            <div class="alert alert-success" role="alert">
+                New item "{{ Session::get('item_updated') }}" has been successfuly updated.
+            </div>
+        @endif
+        @if (Session::has('comment_created'))
+            <div class="alert alert-success" role="alert">
+                "{{ Session::get('comment_created') }}"'s comment has been successfuly added.
+            </div>
+        @endif
+        @if (Session::has('comment_updated'))
+            <div class="alert alert-success" role="alert">
+            "{{ Session::get('comment_updated') }}"'s comment has been successfuly updated.
+            </div>
+        @endif
+        @if (Session::has('comment_deleted'))
+            <div class="alert alert-success" role="alert">
+            "{{ Session::get('comment_deleted') }}"'s comment has been successfuly deleted.
+            </div>
+        @endif
     <div class="d-flex">
         <h1 class="ps-3 me-auto">{{$item->name}}
         @auth

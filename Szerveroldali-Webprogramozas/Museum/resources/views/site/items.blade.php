@@ -15,6 +15,12 @@
                 <th style="width: 30%">Image</th>
             </tr>
         </thead>
+        @if (Session::has('item_deleted'))
+        <p>??</p>
+            <div class="alert alert-success" role="alert">
+                Item "{{ Session::get('item_deleted') }}" has been successfuly delted.
+            </div>
+        @endif
         <tbody class="text-center">
             @foreach ($items as $item)
             <tr class="table-warning" onclick="location.href='{{route('items.show', ['item' => $item->id])}}'";>
