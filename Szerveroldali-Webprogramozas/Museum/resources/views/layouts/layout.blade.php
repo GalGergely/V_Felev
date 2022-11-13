@@ -22,18 +22,6 @@
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container-fluid mx-5">
-                <a class="navbar-brand" href="{{route('dashboard')}}">Dashboard</a>
-                <button
-                    class="navbar-toggler"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#main-navbar"
-                    aria-controls="main-navbar"
-                    aria-expanded="false"
-                    aria-label="Toggle navigation"
-                >
-                    <span class="navbar-toggler-icon"></span>
-                </button>
                 <div class="collapse navbar-collapse" id="main-navbar">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
@@ -42,6 +30,7 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{route('labels.index')}}">Labels</a>
                         </li>
+                        @auth
                         @if (Auth::user()->is_admin)
                         <li class="nav-item">
                             <!--TODO: admin -->
@@ -51,6 +40,7 @@
                             <a class="nav-link" href="{{route('labels.create')}}">New Label</a>
                         </li>
                         @endif
+                        @endauth
                     </ul>
                     <div class="d-flex">
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">

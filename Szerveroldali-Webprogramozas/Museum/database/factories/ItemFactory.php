@@ -19,7 +19,7 @@ class ItemFactory extends Factory
     {
         return [
             'name' => fake()->word(),
-            'description' => fake()->sentence(),
+            'description' => fake()->paragraph(5),
             'obtained' => fake()->date(),
         ];
     }

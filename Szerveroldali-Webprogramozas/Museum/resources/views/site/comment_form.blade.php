@@ -7,13 +7,10 @@
 <form action="{{ isset($comment) ? route('items.updateComment', ['comment' => $comment->id]) : ''}}" method="post">
     @csrf
     <div class="mb-3">
-        <textarea class="form-control" name="text" id="text" value="{{old('text', $comment->text ?? '')}}"></textarea>
-    </div>
-    <div class="mb-3">
-        <input type="file" class="form-control" id="file">
+        <textarea class="form-control" name="text" id="text">{{old('text', $comment->text ?? '')}}</textarea>
     </div>
     <div class="row">
-        <button type="submit" class="btn btn-primary">Küldés</button>
+        <button type="submit" class="btn btn-primary">Comment</button>
     </div>
 </form>
-@endsection
+@endsectionz

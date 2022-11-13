@@ -7,6 +7,7 @@
 <div class="container-fluid px-5 my-3">
     <div class="d-flex">
         <h1 class="ps-3 me-auto">{{$item->name}}
+        @auth
         @if (Auth::user()->is_admin)
         <span class="badge bg-danger">
         <a href="{{ route('items.edit', ['item' => $item->id]) }}" class="btn btn-primary mx-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Szerkesztés">
@@ -20,6 +21,7 @@
             </button>
         </form>
         @endif
+        @endauth
     </div>
     <div class="d-flex">
         <h2>{{$item->description}}</h2>
@@ -57,7 +59,7 @@
             <div class="me-auto"><span class="badge bg-secondary">{{$comment->user->name}}</span> | {{$comment->created_at}}</div>
 
 
-
+            @auth
             @if (Auth::user()->is_admin or $comment->user->id == Auth::id())
         <form action="{{ route('items.editComment', ['comment' => $comment->id]) }}" method="post">
             @csrf
@@ -72,6 +74,7 @@
             </button>
         </form>
         @endif
+        @endauth
 
 
 
@@ -83,19 +86,22 @@
     </div>
     @endforeach
     <hr>
+    @auth
     <h2>Create a new comment</h2>
     <form action="{{ route('items.newComment', ['item'=> $item->id]) }}" method="post">
         @csrf
         <div class="mb-3">
             <textarea class="form-control" name="text" id="text" cols="30" rows="10" placeholder="Comment..."></textarea>
         </div>
-        <div class="mb-3">
-            <input type="file" class="form-control" id="file">
-        </div>
         <div class="row">
-            <button type="submit" class="btn btn-primary">Küldés</button>
+            <button type="submit" class="btn btn-primary">Comment</button>
         </div>
     </form>
+    @else
+    <div class="mb-3">
+            <h2>You have to sigh in to add comments</h2>
+    </div>
+    @endauth
 </div>
 
 @endsection

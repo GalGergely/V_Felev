@@ -22,6 +22,7 @@
                 </tr>
                 @endif
             @endforeach
+            @auth
             @if (Auth::user()->is_admin)
             @foreach ($labels as $label)
                 @if ($label->display=='0')
@@ -33,4 +34,5 @@
                 @endif
             @endforeach
             @endif
+            @endauth
 @endsection

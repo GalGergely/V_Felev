@@ -22,7 +22,7 @@
                     <span class="badge rounded-pill bg-info fs-6">{{$item->name}}</span>
                 </td>
                 <td>
-                    <div>{{ $item->description }}</div>
+                    <div>{{ Str::substr($item->description,0,15) }} ...</div>
                 </td>
                 <td>
                     <div>{{$item->obtained}}</div>

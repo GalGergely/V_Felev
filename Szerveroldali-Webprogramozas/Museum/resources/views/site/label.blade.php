@@ -6,6 +6,7 @@
 <div class="container-fluid px-5 my-3">
     <div class="d-flex">
         <h1 class="ps-3 me-auto">{{$label->name}}
+            @auth
             @if (Auth::user()->is_admin)
             <span class="badge bg-danger">
             <a href="{{ route('labels.edit', ['label' => $label->id]) }}" class="btn btn-primary mx-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Szerkesztés">
@@ -19,6 +20,7 @@
                 </button>
             </form>
             @endif
+            @endauth
     </div>
     <hr />
     <div class="container-fluid px-5 my-3">

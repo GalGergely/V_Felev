@@ -18,22 +18,19 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth')->group(function () {
     Route::get('items/create', [ItemController::class, 'create'])->name('items.create');
     Route::get('labels/create', [LabelController::class, 'create'])->name('labels.create');
-    Route::get('labels', [LabelController::class, 'index'])->name('labels.index');
-
-    Route::resource('items', ItemController::class);
-    Route::resource('labels', LabelController::class);
+    
     Route::post('items/{item}/comment', [ItemController::class, 'newComment'])->name('items.newComment');
     Route::post('items/{item}/{comment}', [ItemController::class, 'deleteComment'])->name('items.deleteComment');
     Route::post('comment_form/{comment}', [ItemController::class, 'editComment'])->name('items.editComment');
     Route::post('comment/{comment}', [ItemController::class, 'updateComment'])->name('items.updateComment');
 
-    Route::get('/', function () {
-        return redirect()->route('items.index');
-    })->name('items');
 
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->middleware(['verified'])->name('dashboard');
+
 });
-
+Route::get('labels', [LabelController::class, 'index'])->name('labels.index');
+Route::resource('items', ItemController::class);
+Route::resource('labels', LabelController::class);
+Route::get('/', function () {
+    return redirect()->route('items.index');
+})->name('items');
 require __DIR__ . '/auth.php';
