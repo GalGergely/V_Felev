@@ -10,8 +10,10 @@ public class ProducerConsumer {
     private static final int CAPACITY = 3;
     private static BlockingQueue queue = new ArrayBlockingQueue<>(CAPACITY);
     private static class Producer implements Runnable {
+
         @Override
         public void run() {
+
             for (int i = 0; i < 10_000; ++i) {
                 System.out.println("Producing: " + i);
                 try {
