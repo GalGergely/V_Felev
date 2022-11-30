@@ -1,0 +1,4 @@
+npm i
+npx sequelize model:generate --name Asd --attributes "title:string"
+#kapcsolotabla
+npx sequelize migration:generate --name create-playlist-track
